@@ -125,7 +125,6 @@ var storedPlayerScripts = {
                         c[i][j].f = 0;
                         c[i][j].g = 0;
                         c[i][j].h = 0;
-                        c[i][j].debug = "";
                         c[i][j].parent = null;
                     }
                 }
@@ -168,26 +167,23 @@ var storedPlayerScripts = {
                                 validmoves.push(currentNode);
                             }
                             // Check if current element is in the open list
-                            validmoves.forEach(element => {
-                                var gScore = element.g + 1;
+                            for (var i = 0; i < validmoves.length; i++){
+                                var gScore = validmoves[i].g + 1;
                                 var isBestGScore = false;
-
-                                if (!openList.includes(element)) {
+                                if (!openList.includes(validmoves[i])) {
                                     isBestGScore = true;
-                                    element.h = this.manhattanDistance(element, endPositions[0]);
-                                    openList.push(element);
-                                } else if (gScore < element.g)
+                                    validmoves[i].h = this.manhattanDistance(validmoves[i], endPositions[0]);
+                                    openList.push(validmoves[i]);
+                                } else if (gScore < validmoves[i].g)
                                     isBestGScore = true;
                                 if (isBestGScore){
-                                    element.parent = currentNode;
-                                    element.g = gScore;
-                                    element.f = element.h + element.g;
+                                    validmoves[i].parent = currentNode;
+                                    validmoves[i].g = gScore;
+                                    validmoves[i].f = validmoves[i].h + validmoves[i].g;
                                 }
-                                return element;
-                            })
+                                return validmoves[i];
+                            }
                         }
-
-                        return validmoves[Math.floor(Math.random() * validmoves.length)];
                     }
                     else {
                         // if the only one movement is equal to my actual position, we rather stay there
